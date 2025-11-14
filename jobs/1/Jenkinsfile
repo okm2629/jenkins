@@ -1,0 +1,14 @@
+library 'utils'
+
+pipeline {
+    agent any
+    stages{
+        stage('test library'){
+            steps{
+                sample('Ithome')
+                sample('Jenkins')
+                sample('Ben')            
+            }
+        }
+    }
+}
