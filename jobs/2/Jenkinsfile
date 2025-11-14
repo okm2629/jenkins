@@ -1,0 +1,9 @@
+library 'ithome-utils'
+// www.example.com
+// webSiteCodePipeline(domain: 'www.example.com', code: 200)
+// www.google.com
+webSiteCodePipeline(domain: 'www.google.com', code: 200)
+// test.k6.io
+// webSiteCodePipeline(domain: 'test.k6.io', code: 308)
+// k6.io
+// webSiteCodePipeline(domain: 'k6.io', code: 301)
