@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        K6_SCRIPT = "${WORKSPACE}/jobs/ithome-day9-sample-k6-testing/ithome-sample.js"
+        K6_SCRIPT = "${WORKSPACE}/jobs/4_k6_cloud/sample.js"
     }    
     stages {
         stage('Sample request'){
