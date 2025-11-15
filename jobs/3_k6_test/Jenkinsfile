@@ -1,0 +1,13 @@
+pipeline{
+    agent any
+    environment {
+        K6_SCRIPT = "${WORKSPACE}/jobs/3_k6_test/sample.js"
+    }
+    stages{
+        stage('Run k6 testing'){
+            steps{
+                sh "k6 run ${K6_SCRIPT}"
+            }
+        }
+    }
+}
