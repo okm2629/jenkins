@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    environment {
+        K6_SCRIPT = "${WORKSPACE}/jobs/ithome-day9-sample-k6-testing/ithome-sample.js"
+    }    
+    stages {
+        stage('Sample request'){
+            steps {
+                sh "k6 run ${K6_SCRIPT}"
+            }
+        }
+    }
+    post {
+        always{
+            archiveArtifacts artifacts: 'ithome-sample.html', followSymlinks: false
+        }
+    }    
+}
