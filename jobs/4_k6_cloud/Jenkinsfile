@@ -4,9 +4,16 @@ pipeline {
         K6_SCRIPT = "${WORKSPACE}/jobs/4_k6_cloud/sample.js"
     }    
     stages {
+        stage('K6 cloud login'){
+            steps {
+                withCredentials([string(credentialsId: 'k6-cloud-token', variable: 'K6_CLOUD_TOKEN')]) {
+                    sh "k6 login cloud -t ${K6_CLOUD_TOKEN}"
+                }
+            }
+        }        
         stage('Sample request'){
             steps {
-                sh "k6 run ${K6_SCRIPT}"
+                sh "k6 run ${K6_SCRIPT} -o cloud"
             }
         }
     }

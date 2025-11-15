@@ -1,18 +1,25 @@
 import http from 'k6/http';
-import { sleep } from 'k6';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 export const options = {
-  iterations: 10,
+  stages: [
+    { duration: '5s', target: 10 }, 
+    { duration: '1m', target: 10 },
+    { duration: '5s', target: 0 },
+  ],
+  thresholds: {
+    http_req_duration: ['p(99)<1500'],
+  },
+  ext: {
+    loadimpact: {
+      projectID: 3600288,
+      name: "4_k6_cloud"
+    }
+  }
 };
 
-// The default exported function is gonna be picked up by k6 as the entry point for the test script. It will be executed repeatedly in "iterations" for the whole duration of the test.
 export default function () {
-  // Make a GET request to the target URL
-  http.get('https://quickpizza.grafana.com');
-
-  // Sleep for 1 second to simulate real-world usage
-  sleep(1);
+  http.get('https://test.k6.io');
 }
 
 export function handleSummary(data) {
