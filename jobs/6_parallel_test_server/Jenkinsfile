@@ -1,0 +1,32 @@
+def server_list = [
+    "a",
+    "b",
+    "c"
+]
+
+def parallelStagesMap = server_list.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+def generateStage(server) {
+    return {
+        stage("${server} server status") {
+            script {
+               sh "curl http://${server}-server:8000/healthz"
+            }
+        }
+    }
+}
+
+pipeline {
+    agent any
+    stages {
+        stage('check service status') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }
+    }
+}
