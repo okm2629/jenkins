@@ -1,0 +1,23 @@
+server_list = ['a', 'b', 'c']
+
+pipeline{
+    agent any
+    stages{
+        stage('check service status') {
+            steps{
+                check_server_status(server_list)
+            }
+        }
+    }
+}
+
+
+def check_server_status(list) {
+    for (int i = 0; i < list.size(); i++) {
+        stage("${list[i]} server status"){
+            sh "curl http://${list[i]}-server:8000/healthz"
+            // testing
+            //echo "curl http://${list[i]}-server:8000/healthz"
+        }
+    }
+}
