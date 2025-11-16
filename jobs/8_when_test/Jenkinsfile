@@ -1,0 +1,39 @@
+pipeline{
+    agent any
+    parameters {
+        choice(name: 'env', choices: ['staging', 'uat', 'prod'])
+    }
+    stages{
+        stage("Deploy"){
+            parallel{
+                stage("staging env"){
+                    when {
+                        expression { params.env == "staging" } 
+                    }
+                    steps{
+                        // do staging processing
+                        echo "deploy to staging env"
+                    }
+                }
+                stage("UAT uat"){
+                    when {
+                        expression { params.env == "uat" } 
+                    }
+                    steps{
+                        // do uat processing
+                        echo "deploy to uat env"
+                    }
+                }
+                stage("Prod env"){
+                    when {
+                        expression { params.env == "prod" } 
+                    }
+                    steps{
+                        // do prod processing
+                        echo "deploy to prod env"
+                    }
+                }
+            }
+        }
+    }
+}
