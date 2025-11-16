@@ -1,0 +1,13 @@
+pipeline{
+    parameters {
+        text(name: 'Who', defaultValue: '')
+    }
+    agent any
+    stages{
+        stage("Sample"){
+            steps{
+                echo "This is ${params.Who} speaking."
+            }
+        }
+    }
+}
