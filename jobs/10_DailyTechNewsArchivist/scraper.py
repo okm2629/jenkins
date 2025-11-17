@@ -44,7 +44,7 @@ def scrape_news():
         title = item.title.text if item.title else "No Title"
         link = item.link.text if item.link else "#"
         pub_date = item.pubdate.text if item.pubdate else ""
-        print(title, link, pub_date)
+        print(title, item.link, pub_date)
 
         # 簡單過濾一下廣告或空標題
         if title or link:
@@ -97,7 +97,7 @@ def scrape_news():
     </head>
     <body>
         <div class="container">
-            <h1><span>G</span>oogle News 台灣焦點 (RSS Source)</h1>
+            <h1><span>Google News</span> 台灣焦點 (RSS Source)</h1>
             <div class="timestamp">自動生成時間: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</div>
             
             <table>
