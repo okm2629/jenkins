@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // 確認 "jobs/10_DailyTechNewsArchivist"
-                    dir('jobs/10_NewsArchivist') {
+                    dir('jobs/10_DailyTechNewsArchivist') {
                         // 因為已經進入資料夾，現在 "." 就代表該資料夾，能找到 Dockerfile 了
                         sh "docker build -t news-scraper:latest ."
                     }
@@ -28,7 +28,7 @@ pipeline {
         stage('3. Run Scraper') {
             steps {
                 script {
-                    dir('jobs/10_NewsArchivist') {
+                    dir('jobs/10_DailyTechNewsArchivist') {
 
                         sh "docker run --rm -v \$(pwd):/app/data news-scraper:latest"
                         
@@ -41,7 +41,7 @@ pipeline {
         
         stage('4. Archive Results') {
             steps {
-                dir('jobs/10_NewsArchivist') {
+                dir('jobs/10_DailyTechNewsArchivist') {
                     // 使用通配符 *.* 抓取所有的 csv 和 html，這樣不管你檔名怎麼改都抓得到
                     archiveArtifacts artifacts: '*.*', fingerprint: true
                 }
