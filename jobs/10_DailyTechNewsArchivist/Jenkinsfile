@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    // 設定排程：每天早上 8 點自動執行 (Cron 語法)
+    triggers {
+        cron('0 8 * * *') 
+    }
+
+    environment {
+        IMAGE_NAME = "news-scraper:latest"
+    }
+
+    stages {
+        stage('1. Checkout') {
+            steps {
+                // 拉取程式碼
+                git branch: 'main', url: 'https://github.com/your-repo/news-scraper.git'
+            }
+        }
+
+        stage('2. Build Image') {
+            steps {
+                script {
+                    // 建置 Docker 映像
+                    docker.build(IMAGE_NAME, ".")
+                }
+            }
+        }
+
+        stage('3. Run Scraper') {
+            steps {
+                script {
+                    // 重點：使用 -v 將容器內的 /app/data 掛載到 Jenkins 當前工作目錄
+                    // 這樣爬下來的 CSV 才會留在 Jenkins 上，而不是隨容器消失
+                    sh "docker run --rm -v ${WORKSPACE}:/app/data ${IMAGE_NAME}"
+                }
+            }
+        }
+
+        stage('4. Archive Results') {
+            steps {
+                // 將 CSV 檔案封存，讓你在 Jenkins 網頁上可以直接下載
+                archiveArtifacts artifacts: '*.csv', fingerprint: true
+            }
+        }
+    }
+}
