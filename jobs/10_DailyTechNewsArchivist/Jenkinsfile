@@ -16,10 +16,9 @@ pipeline {
         stage('2. Build Image') {
             steps {
                 script {
-                    // 確認 "jobs/10_DailyTechNewsArchivist"
                     dir('jobs/10_DailyTechNewsArchivist') {
-                        // 因為已經進入資料夾，現在 "." 就代表該資料夾，能找到 Dockerfile 了
-                        sh "docker build -t news-scraper:latest ."
+                        // 這會讓容器直接使用 Jenkins 伺服器的網路，解決 DNS 解析問題
+                        sh "docker build --network=host -t news-scraper:latest ."
                     }
                 }
             }
