@@ -5,10 +5,9 @@ from datetime import datetime
 import os
 
 def scrape_news():
-    # 改用 Google News 的 RSS Feed 網址 (這是 XML 格式，不需要 JS 渲染)
+
     url = "https://news.google.com/rss?hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
     
-    # 雖然是 RSS，加上 User-Agent 還是比較保險
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     }
@@ -19,9 +18,9 @@ def scrape_news():
     except Exception as e:
         print(f"Error fetching URL: {e}")
         return
-
-    # 使用 xml 解析器 (如果沒安裝 lxml，html.parser 也可以處理簡單的 RSS)
-    soup = BeautifulSoup(response.content, "html.parser")
+    
+    # 這樣 BeautifulSoup 才會把 <link> 當作一般標籤，讀取裡面的文字
+    soup = BeautifulSoup(response.content, "xml")
     
     # 準備輸出目錄
     output_dir = "/app/data"

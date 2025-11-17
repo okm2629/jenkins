@@ -5,7 +5,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # 安裝依賴庫
-RUN pip install requests beautifulsoup4
+RUN pip install requests beautifulsoup4, lxml
 
 # 複製爬蟲程式到容器內
 COPY scraper.py .
