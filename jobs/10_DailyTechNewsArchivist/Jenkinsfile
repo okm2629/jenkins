@@ -12,8 +12,7 @@ pipeline {
         stage('2. Build Image') {
             steps {
                 script {
-                    // ▼ 重點：切換到你的專案資料夾 ▼
-                    // 請確認 "jobs/10_DailyTechNewsArchivist" 是你 GitHub 上的真實路徑
+                    // 確認 "jobs/10_DailyTechNewsArchivist"
                     dir('jobs/10_DailyTechNewsArchivist') {
                         // 因為已經進入資料夾，現在 "." 就代表該資料夾，能找到 Dockerfile 了
                         sh "docker build -t news-scraper:latest ."
@@ -26,7 +25,7 @@ pipeline {
             steps {
                 script {
                     dir('jobs/10_DailyTechNewsArchivist') {
-                        // 修改這裡：將 ${PWD} 改為 \$(pwd)
+
                         sh "docker run --rm -v \$(pwd):/app/data news-scraper:latest"
                         
                         // (除錯用) 加入這行確認檔案真的有產生
@@ -37,12 +36,12 @@ pipeline {
         }
         
         stage('4. Archive Results') {
-             steps {
-                 // ▼ 切換進去才能找到生成的 CSV ▼
-                 dir('jobs/10_DailyTechNewsArchivist') {
-                     archiveArtifacts artifacts: '*.csv', fingerprint: true
-                 }
-             }
+            steps {
+                dir('jobs/10_DailyTechNewsArchivist') {
+                    // 使用通配符 *.* 抓取所有的 csv 和 html，這樣不管你檔名怎麼改都抓得到
+                    archiveArtifacts artifacts: '*.*', fingerprint: true
+                }
+            }
         }
     }
 }
