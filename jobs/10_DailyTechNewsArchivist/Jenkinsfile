@@ -1,19 +1,10 @@
 pipeline {
     agent any
-
-    // 設定排程：每天早上 8 點自動執行 (Cron 語法)
-    triggers {
-        cron('0 8 * * *') 
-    }
-
-    environment {
-        IMAGE_NAME = "news-scraper:latest"
-    }
+    // ... 其他設定 ...
 
     stages {
         stage('1. Checkout') {
             steps {
-                // 拉取程式碼
                 git branch: 'main', url: 'https://github.com/okm2629/jenkins.git'
             }
         }
@@ -21,8 +12,12 @@ pipeline {
         stage('2. Build Image') {
             steps {
                 script {
-                    // 建置 Docker 映像
-                    docker.build(IMAGE_NAME, ".")
+                    // ▼ 重點：切換到你的專案資料夾 ▼
+                    // 請確認 "jobs/10_DailyTechNewsArchivist" 是你 GitHub 上的真實路徑
+                    dir('jobs/10_DailyTechNewsArchivist') {
+                        // 因為已經進入資料夾，現在 "." 就代表該資料夾，能找到 Dockerfile 了
+                        sh "docker build -t news-scraper:latest ."
+                    }
                 }
             }
         }
@@ -30,18 +25,23 @@ pipeline {
         stage('3. Run Scraper') {
             steps {
                 script {
-                    // 重點：使用 -v 將容器內的 /app/data 掛載到 Jenkins 當前工作目錄
-                    // 這樣爬下來的 CSV 才會留在 Jenkins 上，而不是隨容器消失
-                    sh "docker run --rm -v ${WORKSPACE}:/app/data ${IMAGE_NAME}"
+                    // ▼ 這裡也要切換，因為 scraper.py 也在裡面 ▼
+                    dir('jobs/10_DailyTechNewsArchivist') {
+                        // 注意：掛載 Volume 時，我們需要掛載 "當前目錄"
+                        // 在 dir() 區塊內，${PWD} 會指向子目錄
+                        sh "docker run --rm -v ${PWD}:/app/data news-scraper:latest"
+                    }
                 }
             }
         }
-
+        
         stage('4. Archive Results') {
-            steps {
-                // 將 CSV 檔案封存，讓你在 Jenkins 網頁上可以直接下載
-                archiveArtifacts artifacts: '*.csv', fingerprint: true
-            }
+             steps {
+                 // ▼ 切換進去才能找到生成的 CSV ▼
+                 dir('jobs/10_DailyTechNewsArchivist') {
+                     archiveArtifacts artifacts: '*.csv', fingerprint: true
+                 }
+             }
         }
     }
 }
