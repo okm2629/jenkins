@@ -1,17 +1,29 @@
-# Dockerfile
+# Use the lightweight Python 3.9 slim image as the base
 FROM python:3.9-slim
 
-# 設定工作目錄
+# Set the working directory inside the container to /app
 WORKDIR /app
 
-# 安裝依賴庫
+# Install system-level dependencies required for compiling 'lxml'
+# 'lxml' is a C-based library, so it needs 'gcc' and development headers (libxml2-dev, libxslt-dev)
+# We clean up the apt cache afterwards to keep the image size small
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libxml2-dev \
+    libxslt-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip to the latest version to avoid installation issues
+RUN pip install --upgrade pip
+
+# Install the required Python libraries
 RUN pip install requests beautifulsoup4 lxml
 
-# 複製爬蟲程式到容器內
+# Copy the scraper script from the host to the container
 COPY scraper.py .
 
-# 建立數據存放目錄
+# Create a directory to store the output files (CSV/HTML)
 RUN mkdir data
 
-# 預設執行指令
+# Define the default command to execute the scraper when the container starts
 CMD ["python", "scraper.py"]
