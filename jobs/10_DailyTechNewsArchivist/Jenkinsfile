@@ -14,7 +14,7 @@ pipeline {
         stage('1. Checkout') {
             steps {
                 // 拉取程式碼
-                git branch: 'main', url: 'https://github.com/your-repo/news-scraper.git'
+                git branch: 'main', url: 'https://github.com/okm2629/jenkins.git'
             }
         }
 
