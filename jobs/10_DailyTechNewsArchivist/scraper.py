@@ -38,6 +38,7 @@ def scrape_news():
     
     # 在 RSS 中，每一則新聞都被包在 <item> 標籤裡
     items = soup.find_all('item')
+    print(f"找到 {len(items)} 則新聞項目，開始處理...")
     
     for item in items:
         title = item.title.text if item.title else "No Title"
