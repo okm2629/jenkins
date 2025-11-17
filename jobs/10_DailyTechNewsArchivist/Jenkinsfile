@@ -25,11 +25,12 @@ pipeline {
         stage('3. Run Scraper') {
             steps {
                 script {
-                    // ▼ 這裡也要切換，因為 scraper.py 也在裡面 ▼
                     dir('jobs/10_DailyTechNewsArchivist') {
-                        // 注意：掛載 Volume 時，我們需要掛載 "當前目錄"
-                        // 在 dir() 區塊內，${PWD} 會指向子目錄
-                        sh "docker run --rm -v ${PWD}:/app/data news-scraper:latest"
+                        // 修改這裡：將 ${PWD} 改為 \$(pwd)
+                        sh "docker run --rm -v \$(pwd):/app/data news-scraper:latest"
+                        
+                        // (除錯用) 加入這行確認檔案真的有產生
+                        sh "ls -l *.csv" 
                     }
                 }
             }
