@@ -7,11 +7,11 @@ WORKDIR /app
 # Install system-level dependencies required for compiling 'lxml'
 # 'lxml' is a C-based library, so it needs 'gcc' and development headers (libxml2-dev, libxslt-dev)
 # We clean up the apt cache afterwards to keep the image size small
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libxml2-dev \
-    libxslt-dev \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y \
+#     gcc \
+#     libxml2-dev \
+#     libxslt-dev \
+#     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip to the latest version to avoid installation issues
 RUN pip install --upgrade pip

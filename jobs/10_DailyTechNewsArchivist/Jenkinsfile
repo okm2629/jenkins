@@ -3,7 +3,7 @@ pipeline {
 
     // 設定排程：每天早上 8 點自動執行 (Cron 語法)
     triggers {
-        cron('54 1 * * *') 
+        cron('0 8 * * *') 
     }
 
     stages {

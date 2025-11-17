@@ -37,13 +37,13 @@ def scrape_news():
     
     # 在 RSS 中，每一則新聞都被包在 <item> 標籤裡
     items = soup.find_all('item')
-    print(f"找到 {items} 則新聞項目，開始處理...")
+    # print(f"找到 {items} 則新聞項目，開始處理...")
 
     for item in items:
         title = item.title.text if item.title else "No Title"
         link = item.link.text if item.link else "#"
         pub_date = item.pubDate.text if item.pubDate else ""
-        print(title, item.link.text, pub_date)
+        # print(title, item.link.text, pub_date)
 
         # 簡單過濾一下廣告或空標題
         if title and link:
