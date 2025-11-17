@@ -42,11 +42,11 @@ def scrape_news():
     for item in items:
         title = item.title.text if item.title else "No Title"
         link = item.link.text if item.link else "#"
-        pub_date = item.pubdate.text if item.pubdate else ""
+        pub_date = item.pubDate.text if item.pubDate else ""
         print(title, item.link.text, pub_date)
 
         # 簡單過濾一下廣告或空標題
-        if title or link:
+        if title and link:
             news_items.append({
                 "title": title, 
                 "link": link,
