@@ -6,6 +6,15 @@ pipeline {
         cron('0 8 * * *') 
     }
 
+    options {
+        // logRotator: 負責輪替日誌
+        // numToKeepStr: '10' 代表只保留最新的 10 筆
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        
+        // 讓 console log 加上時間戳記，可以順便加這行
+        timestamps() 
+    }
+
     stages {
         stage('1. Checkout') {
             steps {
