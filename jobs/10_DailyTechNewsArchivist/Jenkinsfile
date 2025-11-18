@@ -29,7 +29,7 @@ pipeline {
                 script {
                     dir('jobs/10_DailyTechNewsArchivist') {
 
-                        sh "docker run --rm -v \$(pwd):/app/data news-scraper:latest"
+                        sh "docker run --rm --network=host -v \$(pwd):/app/data news-scraper:latest"
                         
                         // (除錯用) 加入這行確認檔案真的有產生
                         sh "ls -l *.csv" 
