@@ -1,11 +1,4 @@
-# jenkins
 # Daily News Archivist - Automated News Archiving System
-
-[![Build Status](https://img.shields.io/badge/CI_Status-Passing-brightgreen?style=flat-square)](https://your-jenkins-url.com/job/DailyNewsArchivist/)
-[![Dockerized](https://img.shields.io/badge/Container-Docker-blue?style=flat-square)](https://hub.docker.com/r/your-username/news-scraper)
-
----
-
 ## Project Goal
 
 This project is designed to implement a **highly reliable and automated CI/CD Pipeline** for the scheduled acquisition and reporting of daily news from the **Google News RSS Feed (Taiwan)**.
@@ -37,8 +30,7 @@ This project is designed to implement a **highly reliable and automated CI/CD Pi
 | Libraries | `requests`, `beautifulsoup4`, **`lxml`** | High-performance XML/RSS Parsing and Data Extraction |
 
 ### Execution Flow
-
-(Insert your flow diagram image here, showing the flow from SCM to Artifacts)
+![alt text](DailyNewsArchivist.png)
 
 ---
 
